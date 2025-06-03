@@ -1,0 +1,20 @@
+{{>licenseInfo}}
+
+package {{invokerPackage}}.auth;
+
+import org.openapitools.client.ApiException;
+
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+
+{{>generatedAnnotation}}
+public interface Authentication {
+    /**
+     * Apply authentication settings request and cookies.
+     *
+     * @param requestBuilder Reuest builder to apply authentication settings to
+     * @param httpClient HttpClient to get the cookie manager from
+     */
+    void applyToParams(HttpRequest.Builder requestBuilder, HttpClient httpClient) throws ApiException;
+
+}

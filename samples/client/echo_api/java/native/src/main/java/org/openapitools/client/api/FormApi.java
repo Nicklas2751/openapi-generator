@@ -53,26 +53,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class FormApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public FormApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public FormApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -112,13 +100,14 @@ public class FormApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testFormIntegerBooleanStringWithHttpInfo(@javax.annotation.Nullable Integer integerForm, @javax.annotation.Nullable Boolean booleanForm, @javax.annotation.Nullable String stringForm) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testFormIntegerBooleanStringRequestBuilder(integerForm, booleanForm, stringForm);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -148,13 +137,13 @@ public class FormApi {
     }
   }
 
-  private HttpRequest.Builder testFormIntegerBooleanStringRequestBuilder(@javax.annotation.Nullable Integer integerForm, @javax.annotation.Nullable Boolean booleanForm, @javax.annotation.Nullable String stringForm) throws ApiException {
+      private HttpRequest.Builder testFormIntegerBooleanStringRequestBuilder(@javax.annotation.Nullable Integer integerForm, @javax.annotation.Nullable Boolean booleanForm, @javax.annotation.Nullable String stringForm) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/form/integer/boolean/string";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
@@ -179,11 +168,13 @@ public class FormApi {
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", HttpRequest.BodyPublishers
             .ofInputStream(() -> new ByteArrayInputStream(formOutputStream.toByteArray())));
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -208,13 +199,14 @@ public class FormApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testFormObjectMultipartWithHttpInfo(@javax.annotation.Nonnull TestFormObjectMultipartRequestMarker marker) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testFormObjectMultipartRequestBuilder(marker);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -244,7 +236,7 @@ public class FormApi {
     }
   }
 
-  private HttpRequest.Builder testFormObjectMultipartRequestBuilder(@javax.annotation.Nonnull TestFormObjectMultipartRequestMarker marker) throws ApiException {
+      private HttpRequest.Builder testFormObjectMultipartRequestBuilder(@javax.annotation.Nonnull TestFormObjectMultipartRequestMarker marker) throws ApiException {
     // verify the required parameter 'marker' is set
     if (marker == null) {
       throw new ApiException(400, "Missing the required parameter 'marker' when calling testFormObjectMultipart");
@@ -254,7 +246,7 @@ public class FormApi {
 
     String localVarPath = "/form/object/multipart";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
@@ -293,11 +285,13 @@ public class FormApi {
     localVarRequestBuilder
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", formDataPublisher);
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -332,13 +326,14 @@ public class FormApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testFormOneofWithHttpInfo(@javax.annotation.Nullable String form1, @javax.annotation.Nullable Integer form2, @javax.annotation.Nullable String form3, @javax.annotation.Nullable Boolean form4, @javax.annotation.Nullable Long id, @javax.annotation.Nullable String name) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testFormOneofRequestBuilder(form1, form2, form3, form4, id, name);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -368,13 +363,13 @@ public class FormApi {
     }
   }
 
-  private HttpRequest.Builder testFormOneofRequestBuilder(@javax.annotation.Nullable String form1, @javax.annotation.Nullable Integer form2, @javax.annotation.Nullable String form3, @javax.annotation.Nullable Boolean form4, @javax.annotation.Nullable Long id, @javax.annotation.Nullable String name) throws ApiException {
+      private HttpRequest.Builder testFormOneofRequestBuilder(@javax.annotation.Nullable String form1, @javax.annotation.Nullable Integer form2, @javax.annotation.Nullable String form3, @javax.annotation.Nullable Boolean form4, @javax.annotation.Nullable Long id, @javax.annotation.Nullable String name) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/form/oneof";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
@@ -408,11 +403,13 @@ public class FormApi {
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", HttpRequest.BodyPublishers
             .ofInputStream(() -> new ByteArrayInputStream(formOutputStream.toByteArray())));
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

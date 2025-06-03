@@ -53,26 +53,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class PathApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public PathApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public PathApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -114,13 +102,14 @@ public class PathApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathWithHttpInfo(@javax.annotation.Nonnull String pathString, @javax.annotation.Nonnull Integer pathInteger, @javax.annotation.Nonnull String enumNonrefStringPath, @javax.annotation.Nonnull StringEnumRef enumRefStringPath) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathRequestBuilder(pathString, pathInteger, enumNonrefStringPath, enumRefStringPath);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -150,7 +139,7 @@ public class PathApi {
     }
   }
 
-  private HttpRequest.Builder testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathRequestBuilder(@javax.annotation.Nonnull String pathString, @javax.annotation.Nonnull Integer pathInteger, @javax.annotation.Nonnull String enumNonrefStringPath, @javax.annotation.Nonnull StringEnumRef enumRefStringPath) throws ApiException {
+      private HttpRequest.Builder testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathRequestBuilder(@javax.annotation.Nonnull String pathString, @javax.annotation.Nonnull Integer pathInteger, @javax.annotation.Nonnull String enumNonrefStringPath, @javax.annotation.Nonnull StringEnumRef enumRefStringPath) throws ApiException {
     // verify the required parameter 'pathString' is set
     if (pathString == null) {
       throw new ApiException(400, "Missing the required parameter 'pathString' when calling testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath");
@@ -176,16 +165,18 @@ public class PathApi {
         .replace("{enum_nonref_string_path}", ApiClient.urlEncode(enumNonrefStringPath.toString()))
         .replace("{enum_ref_string_path}", ApiClient.urlEncode(enumRefStringPath.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

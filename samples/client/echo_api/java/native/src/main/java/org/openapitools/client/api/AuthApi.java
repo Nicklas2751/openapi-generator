@@ -46,26 +46,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class AuthApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public AuthApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public AuthApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -99,13 +87,14 @@ public class AuthApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testAuthHttpBasicWithHttpInfo() throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = testAuthHttpBasicRequestBuilder();
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = testAuthHttpBasicRequestBuilder(localVarHttpClient);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -135,22 +124,26 @@ public class AuthApi {
     }
   }
 
-  private HttpRequest.Builder testAuthHttpBasicRequestBuilder() throws ApiException {
+      private HttpRequest.Builder testAuthHttpBasicRequestBuilder(HttpClient httpClient) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/auth/http/basic";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("http_auth");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -173,13 +166,14 @@ public class AuthApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testAuthHttpBearerWithHttpInfo() throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = testAuthHttpBearerRequestBuilder();
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = testAuthHttpBearerRequestBuilder(localVarHttpClient);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -209,22 +203,26 @@ public class AuthApi {
     }
   }
 
-  private HttpRequest.Builder testAuthHttpBearerRequestBuilder() throws ApiException {
+      private HttpRequest.Builder testAuthHttpBearerRequestBuilder(HttpClient httpClient) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/auth/http/bearer";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("http_bearer_auth");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

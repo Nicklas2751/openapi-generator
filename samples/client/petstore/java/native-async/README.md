@@ -85,6 +85,7 @@ public class AnotherFakeApiExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Configure clients using the `defaultClient` object, such as
         // overriding the host and port, timeout, etc.
+        
         AnotherFakeApi apiInstance = new AnotherFakeApi(defaultClient);
         Client client = new Client(); // Client | client model
         try {

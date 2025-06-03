@@ -56,26 +56,14 @@ import java.util.concurrent.CompletableFuture;
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public {{classname}}() {
     this(Configuration.getDefaultApiClient());
   }
 
   public {{classname}}(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
   {{#asyncNative}}
 
@@ -196,8 +184,9 @@ public class {{classname}} {
     {{/asyncNative}}
     {{#asyncNative}}
     try {
-      HttpRequest.Builder localVarRequestBuilder = {{operationId}}RequestBuilder({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
-      return memberVarHttpClient.sendAsync(
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+      HttpRequest.Builder localVarRequestBuilder = {{operationId}}RequestBuilder({{#hasAuthMethods}}localVarHttpClient{{#hasParams}}, {{/hasParams}}{{/hasAuthMethods}}{{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -207,7 +196,7 @@ public class {{classname}} {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<{{{returnType}}}>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<{{{returnType}}}>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -245,13 +234,14 @@ public class {{classname}} {
   {{/isDeprecated}}
   public {{#asyncNative}}CompletableFuture<{{/asyncNative}}ApiResponse<{{{returnType}}}{{^returnType}}Void{{/returnType}}>{{#asyncNative}}>{{/asyncNative}} {{operationId}}WithHttpInfo({{#allParams}}{{>nullable_var_annotations}} {{{dataType}}} {{paramName}}{{^-last}}, {{/-last}}{{/allParams}}) throws ApiException {
     {{^asyncNative}}
-    HttpRequest.Builder localVarRequestBuilder = {{operationId}}RequestBuilder({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = {{operationId}}RequestBuilder({{#hasAuthMethods}}localVarHttpClient{{#hasParams}}, {{/hasParams}}{{/hasAuthMethods}}{{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -297,7 +287,7 @@ public class {{classname}} {
         return new ApiResponse<{{{returnType}}}>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<{{{returnType}}}>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<{{{returnType}}}>() {})
         );
         {{/returnType}}
         {{^returnType}}
@@ -327,12 +317,13 @@ public class {{classname}} {
     {{/asyncNative}}
     {{#asyncNative}}
     try {
-      HttpRequest.Builder localVarRequestBuilder = {{operationId}}RequestBuilder({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
-      return memberVarHttpClient.sendAsync(
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+      HttpRequest.Builder localVarRequestBuilder = {{operationId}}RequestBuilder({{#hasAuthMethods}}localVarHttpClient{{#hasParams}}, {{/hasParams}}{{/hasAuthMethods}}{{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("{{operationId}}", localVarResponse));
@@ -344,7 +335,7 @@ public class {{classname}} {
                   new ApiResponse<{{{returnType}}}>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<{{{returnType}}}>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<{{{returnType}}}>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -364,7 +355,7 @@ public class {{classname}} {
     {{/asyncNative}}
   }
 
-  private HttpRequest.Builder {{operationId}}RequestBuilder({{#allParams}}{{>nullable_var_annotations}} {{{dataType}}} {{paramName}}{{^-last}}, {{/-last}}{{/allParams}}) throws ApiException {
+      private HttpRequest.Builder {{operationId}}RequestBuilder({{#hasAuthMethods}}HttpClient httpClient{{#hasParams}}, {{/hasParams}}{{/hasAuthMethods}}{{#allParams}}{{>nullable_var_annotations}} {{{dataType}}} {{paramName}}{{^-last}}, {{/-last}}{{/allParams}}) throws ApiException {
     {{#allParams}}
     {{#required}}
     // verify the required parameter '{{paramName}}' is set
@@ -439,13 +430,13 @@ public class {{classname}} {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
     {{/hasQueryParams}}
     {{^hasQueryParams}}
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     {{/hasQueryParams}}
 
     {{#headerParams}}
@@ -464,7 +455,7 @@ public class {{classname}} {
     {{/isString}}
     {{^isString}}
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes({{paramName}});
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes({{paramName}});
       localVarRequestBuilder.method("{{httpMethod}}", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
@@ -566,11 +557,17 @@ public class {{classname}} {
     localVarRequestBuilder.method("{{httpMethod}}", HttpRequest.BodyPublishers.noBody());
     {{/hasFormParams}}
     {{/bodyParam}}
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    {{#hasAuthMethods}}
+    List<String> localVarAuthNames = {{=% %=}}List.of(%#authMethods%"%name%"%^-last%, %/-last%%/authMethods%);%={{ }}=%
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+    {{/hasAuthMethods}}
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

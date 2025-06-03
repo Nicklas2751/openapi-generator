@@ -37,6 +37,12 @@ src/main/java/org/openapitools/client/ServerVariable.java
 src/main/java/org/openapitools/client/api/PetApi.java
 src/main/java/org/openapitools/client/api/StoreApi.java
 src/main/java/org/openapitools/client/api/UserApi.java
+src/main/java/org/openapitools/client/auth/ApiKeyAuth.java
+src/main/java/org/openapitools/client/auth/Authentication.java
+src/main/java/org/openapitools/client/auth/HttpBasicAuth.java
+src/main/java/org/openapitools/client/auth/HttpBearerAuth.java
+src/main/java/org/openapitools/client/auth/OAuth.java
+src/main/java/org/openapitools/client/auth/OAuthFlow.java
 src/main/java/org/openapitools/client/model/AbstractOpenApiSchema.java
 src/main/java/org/openapitools/client/model/Category.java
 src/main/java/org/openapitools/client/model/ModelApiResponse.java

@@ -55,26 +55,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class PetApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public PetApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public PetApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -108,13 +96,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> addPetWithHttpInfo(@javax.annotation.Nonnull Pet pet) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = addPetRequestBuilder(pet);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = addPetRequestBuilder(localVarHttpClient, pet);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -141,7 +130,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder addPetRequestBuilder(@javax.annotation.Nonnull Pet pet) throws ApiException {
+      private HttpRequest.Builder addPetRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Pet pet) throws ApiException {
     // verify the required parameter 'pet' is set
     if (pet == null) {
       throw new ApiException(400, "Missing the required parameter 'pet' when calling addPet");
@@ -151,22 +140,26 @@ public class PetApi {
 
     String localVarPath = "/pet";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(pet);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(pet);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth", "http_signature_test");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -191,13 +184,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> deletePetWithHttpInfo(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String apiKey) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = deletePetRequestBuilder(petId, apiKey);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = deletePetRequestBuilder(localVarHttpClient, petId, apiKey);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -224,7 +218,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder deletePetRequestBuilder(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String apiKey) throws ApiException {
+      private HttpRequest.Builder deletePetRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String apiKey) throws ApiException {
     // verify the required parameter 'petId' is set
     if (petId == null) {
       throw new ApiException(400, "Missing the required parameter 'petId' when calling deletePet");
@@ -235,7 +229,7 @@ public class PetApi {
     String localVarPath = "/pet/{petId}"
         .replace("{petId}", ApiClient.urlEncode(petId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     if (apiKey != null) {
       localVarRequestBuilder.header("api_key", apiKey.toString());
@@ -243,11 +237,15 @@ public class PetApi {
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -272,13 +270,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<List<Pet>> findPetsByStatusWithHttpInfo(@javax.annotation.Nonnull List<String> status) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = findPetsByStatusRequestBuilder(status);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = findPetsByStatusRequestBuilder(localVarHttpClient, status);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -298,7 +297,7 @@ public class PetApi {
         return new ApiResponse<List<Pet>>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<Pet>>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<List<Pet>>() {})
         );
       } finally {
       }
@@ -311,7 +310,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder findPetsByStatusRequestBuilder(@javax.annotation.Nonnull List<String> status) throws ApiException {
+      private HttpRequest.Builder findPetsByStatusRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull List<String> status) throws ApiException {
     // verify the required parameter 'status' is set
     if (status == null) {
       throw new ApiException(400, "Missing the required parameter 'status' when calling findPetsByStatus");
@@ -333,19 +332,23 @@ public class PetApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth", "http_signature_test");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -374,13 +377,14 @@ public class PetApi {
    */
   @Deprecated
   public ApiResponse<List<Pet>> findPetsByTagsWithHttpInfo(@javax.annotation.Nonnull List<String> tags) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = findPetsByTagsRequestBuilder(tags);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = findPetsByTagsRequestBuilder(localVarHttpClient, tags);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -400,7 +404,7 @@ public class PetApi {
         return new ApiResponse<List<Pet>>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<Pet>>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<List<Pet>>() {})
         );
       } finally {
       }
@@ -413,7 +417,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder findPetsByTagsRequestBuilder(@javax.annotation.Nonnull List<String> tags) throws ApiException {
+      private HttpRequest.Builder findPetsByTagsRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull List<String> tags) throws ApiException {
     // verify the required parameter 'tags' is set
     if (tags == null) {
       throw new ApiException(400, "Missing the required parameter 'tags' when calling findPetsByTags");
@@ -435,19 +439,23 @@ public class PetApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth", "http_signature_test");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -472,13 +480,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Pet> getPetByIdWithHttpInfo(@javax.annotation.Nonnull Long petId) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getPetByIdRequestBuilder(petId);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = getPetByIdRequestBuilder(localVarHttpClient, petId);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -498,7 +507,7 @@ public class PetApi {
         return new ApiResponse<Pet>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Pet>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Pet>() {})
         );
       } finally {
       }
@@ -511,7 +520,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder getPetByIdRequestBuilder(@javax.annotation.Nonnull Long petId) throws ApiException {
+      private HttpRequest.Builder getPetByIdRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Long petId) throws ApiException {
     // verify the required parameter 'petId' is set
     if (petId == null) {
       throw new ApiException(400, "Missing the required parameter 'petId' when calling getPetById");
@@ -522,16 +531,20 @@ public class PetApi {
     String localVarPath = "/pet/{petId}"
         .replace("{petId}", ApiClient.urlEncode(petId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -554,13 +567,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> updatePetWithHttpInfo(@javax.annotation.Nonnull Pet pet) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updatePetRequestBuilder(pet);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = updatePetRequestBuilder(localVarHttpClient, pet);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -587,7 +601,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder updatePetRequestBuilder(@javax.annotation.Nonnull Pet pet) throws ApiException {
+      private HttpRequest.Builder updatePetRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Pet pet) throws ApiException {
     // verify the required parameter 'pet' is set
     if (pet == null) {
       throw new ApiException(400, "Missing the required parameter 'pet' when calling updatePet");
@@ -597,22 +611,26 @@ public class PetApi {
 
     String localVarPath = "/pet";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(pet);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(pet);
       localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth", "http_signature_test");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -639,13 +657,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> updatePetWithFormWithHttpInfo(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String status) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updatePetWithFormRequestBuilder(petId, name, status);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = updatePetWithFormRequestBuilder(localVarHttpClient, petId, name, status);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -672,7 +691,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder updatePetWithFormRequestBuilder(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String status) throws ApiException {
+      private HttpRequest.Builder updatePetWithFormRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String name, @javax.annotation.Nullable String status) throws ApiException {
     // verify the required parameter 'petId' is set
     if (petId == null) {
       throw new ApiException(400, "Missing the required parameter 'petId' when calling updatePetWithForm");
@@ -683,7 +702,7 @@ public class PetApi {
     String localVarPath = "/pet/{petId}"
         .replace("{petId}", ApiClient.urlEncode(petId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
@@ -705,11 +724,15 @@ public class PetApi {
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", HttpRequest.BodyPublishers
             .ofInputStream(() -> new ByteArrayInputStream(formOutputStream.toByteArray())));
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -738,13 +761,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<ModelApiResponse> uploadFileWithHttpInfo(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String additionalMetadata, @javax.annotation.Nullable File _file) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = uploadFileRequestBuilder(petId, additionalMetadata, _file);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = uploadFileRequestBuilder(localVarHttpClient, petId, additionalMetadata, _file);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -764,7 +788,7 @@ public class PetApi {
         return new ApiResponse<ModelApiResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ModelApiResponse>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<ModelApiResponse>() {})
         );
       } finally {
       }
@@ -777,7 +801,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder uploadFileRequestBuilder(@javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String additionalMetadata, @javax.annotation.Nullable File _file) throws ApiException {
+      private HttpRequest.Builder uploadFileRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Long petId, @javax.annotation.Nullable String additionalMetadata, @javax.annotation.Nullable File _file) throws ApiException {
     // verify the required parameter 'petId' is set
     if (petId == null) {
       throw new ApiException(400, "Missing the required parameter 'petId' when calling uploadFile");
@@ -788,7 +812,7 @@ public class PetApi {
     String localVarPath = "/pet/{petId}/uploadImage"
         .replace("{petId}", ApiClient.urlEncode(petId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
@@ -829,11 +853,15 @@ public class PetApi {
     localVarRequestBuilder
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", formDataPublisher);
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -862,13 +890,14 @@ public class PetApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<ModelApiResponse> uploadFileWithRequiredFileWithHttpInfo(@javax.annotation.Nonnull Long petId, @javax.annotation.Nonnull File requiredFile, @javax.annotation.Nullable String additionalMetadata) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = uploadFileWithRequiredFileRequestBuilder(petId, requiredFile, additionalMetadata);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = uploadFileWithRequiredFileRequestBuilder(localVarHttpClient, petId, requiredFile, additionalMetadata);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -888,7 +917,7 @@ public class PetApi {
         return new ApiResponse<ModelApiResponse>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ModelApiResponse>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<ModelApiResponse>() {})
         );
       } finally {
       }
@@ -901,7 +930,7 @@ public class PetApi {
     }
   }
 
-  private HttpRequest.Builder uploadFileWithRequiredFileRequestBuilder(@javax.annotation.Nonnull Long petId, @javax.annotation.Nonnull File requiredFile, @javax.annotation.Nullable String additionalMetadata) throws ApiException {
+      private HttpRequest.Builder uploadFileWithRequiredFileRequestBuilder(HttpClient httpClient, @javax.annotation.Nonnull Long petId, @javax.annotation.Nonnull File requiredFile, @javax.annotation.Nullable String additionalMetadata) throws ApiException {
     // verify the required parameter 'petId' is set
     if (petId == null) {
       throw new ApiException(400, "Missing the required parameter 'petId' when calling uploadFileWithRequiredFile");
@@ -916,7 +945,7 @@ public class PetApi {
     String localVarPath = "/fake/{petId}/uploadImageWithRequiredFile"
         .replace("{petId}", ApiClient.urlEncode(petId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
@@ -957,11 +986,15 @@ public class PetApi {
     localVarRequestBuilder
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", formDataPublisher);
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("petstore_auth");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

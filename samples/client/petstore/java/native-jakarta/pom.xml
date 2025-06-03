@@ -221,6 +221,11 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable-version}</version>
         </dependency>
+            <dependency>
+                <groupId>com.github.scribejava</groupId>
+                <artifactId>scribejava-apis</artifactId>
+                <version>${scribejava-apis-version}</version>
+            </dependency>
 
         <!-- @Nullable annotation -->
         <dependency>
@@ -247,6 +252,30 @@
             <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.hakky54</groupId>
+            <artifactId>logcaptor</artifactId>
+            <version>${logcaptor.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -259,6 +288,10 @@
         <beanvalidation-version>3.0.2</beanvalidation-version>
         <httpmime-version>4.5.14</httpmime-version>
         <junit-version>5.10.2</junit-version>
+        <scribejava-apis-version>8.3.3</scribejava-apis-version>
         <spotless.version>2.27.2</spotless.version>
+        <assertj-core.version>3.27.3</assertj-core.version>
+        <mockito-core.version>5.14.2</mockito-core.version>
+        <logcaptor.version>2.11.0</logcaptor.version>
     </properties>
 </project>

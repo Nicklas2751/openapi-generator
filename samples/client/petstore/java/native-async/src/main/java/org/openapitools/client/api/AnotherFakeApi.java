@@ -49,26 +49,14 @@ import java.util.concurrent.CompletableFuture;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class AnotherFakeApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public AnotherFakeApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public AnotherFakeApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   private ApiException getApiException(String operationId, HttpResponse<String> response) {
@@ -92,8 +80,9 @@ public class AnotherFakeApi {
    */
   public CompletableFuture<Client> call123testSpecialTags(@javax.annotation.Nonnull Client client) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = call123testSpecialTagsRequestBuilder(client);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -102,7 +91,7 @@ public class AnotherFakeApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Client>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Client>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -123,12 +112,13 @@ public class AnotherFakeApi {
    */
   public CompletableFuture<ApiResponse<Client>> call123testSpecialTagsWithHttpInfo(@javax.annotation.Nonnull Client client) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = call123testSpecialTagsRequestBuilder(client);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("call123testSpecialTags", localVarResponse));
@@ -139,7 +129,7 @@ public class AnotherFakeApi {
                   new ApiResponse<Client>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Client>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Client>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -152,7 +142,7 @@ public class AnotherFakeApi {
     }
   }
 
-  private HttpRequest.Builder call123testSpecialTagsRequestBuilder(@javax.annotation.Nonnull Client client) throws ApiException {
+      private HttpRequest.Builder call123testSpecialTagsRequestBuilder(@javax.annotation.Nonnull Client client) throws ApiException {
     // verify the required parameter 'client' is set
     if (client == null) {
       throw new ApiException(400, "Missing the required parameter 'client' when calling call123testSpecialTags");
@@ -162,22 +152,24 @@ public class AnotherFakeApi {
 
     String localVarPath = "/another-fake/dummy";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(client);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(client);
       localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

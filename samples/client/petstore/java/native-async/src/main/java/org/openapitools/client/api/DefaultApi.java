@@ -49,26 +49,14 @@ import java.util.concurrent.CompletableFuture;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class DefaultApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public DefaultApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public DefaultApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   private ApiException getApiException(String operationId, HttpResponse<String> response) {
@@ -91,8 +79,9 @@ public class DefaultApi {
    */
   public CompletableFuture<FooGetDefaultResponse> fooGet() throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = fooGetRequestBuilder();
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -101,7 +90,7 @@ public class DefaultApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<FooGetDefaultResponse>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<FooGetDefaultResponse>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -121,12 +110,13 @@ public class DefaultApi {
    */
   public CompletableFuture<ApiResponse<FooGetDefaultResponse>> fooGetWithHttpInfo() throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = fooGetRequestBuilder();
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("fooGet", localVarResponse));
@@ -137,7 +127,7 @@ public class DefaultApi {
                   new ApiResponse<FooGetDefaultResponse>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<FooGetDefaultResponse>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<FooGetDefaultResponse>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -150,22 +140,24 @@ public class DefaultApi {
     }
   }
 
-  private HttpRequest.Builder fooGetRequestBuilder() throws ApiException {
+      private HttpRequest.Builder fooGetRequestBuilder() throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/foo";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

@@ -82,12 +82,17 @@ ext {
     beanvalidation_version = "2.0.2"
     {{/useJakartaEe}}
     junit_version = "5.10.2"
+    assertj_core_version = "3.27.3"
     {{#hasFormParamsInSpec}}
     httpmime_version = "4.5.13"
     {{/hasFormParamsInSpec}}
     {{#useReflectionEqualsHashCode}}
     commons_lang3_version = "3.17.0"
     {{/useReflectionEqualsHashCode}}
+    {{#hasAuthMethods}}
+    mockito_core_version = "5.14.2"
+    logcaptor_version = "2.11.0"
+    {{/hasAuthMethods}}
 }
 
 dependencies {
@@ -114,6 +119,12 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:$commons_lang3_version"
     {{/useReflectionEqualsHashCode}}
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    testImplementation "org.assertj:assertj-core:$assertj_core_version"
+    {{#hasAuthMethods}}
+    testImplementation "org.mockito:mockito-core:$mockito_core_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit_version"
+    testImplementation "io.github.hakky54:logcaptor:$logcaptor_version"
+    {{/hasAuthMethods}}
 }
 
 // Use spotless plugin to automatically format code, remove unused import, etc

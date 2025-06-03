@@ -56,26 +56,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class BodyApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public BodyApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public BodyApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -109,13 +97,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<File> testBinaryGifWithHttpInfo() throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testBinaryGifRequestBuilder();
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -135,7 +124,7 @@ public class BodyApi {
         return new ApiResponse<File>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<File>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<File>() {})
         );
       } finally {
       }
@@ -148,22 +137,24 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testBinaryGifRequestBuilder() throws ApiException {
+      private HttpRequest.Builder testBinaryGifRequestBuilder() throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/binary/gif";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "image/gif");
 
     localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -188,13 +179,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testBodyApplicationOctetstreamBinaryWithHttpInfo(@javax.annotation.Nullable File body) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testBodyApplicationOctetstreamBinaryRequestBuilder(body);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -224,28 +216,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testBodyApplicationOctetstreamBinaryRequestBuilder(@javax.annotation.Nullable File body) throws ApiException {
+      private HttpRequest.Builder testBodyApplicationOctetstreamBinaryRequestBuilder(@javax.annotation.Nullable File body) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/body/application/octetstream/binary";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/octet-stream");
     localVarRequestBuilder.header("Accept", "text/plain");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(body);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(body);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -270,13 +264,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testBodyMultipartFormdataArrayOfBinaryWithHttpInfo(@javax.annotation.Nonnull List<File> files) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testBodyMultipartFormdataArrayOfBinaryRequestBuilder(files);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -306,7 +301,7 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testBodyMultipartFormdataArrayOfBinaryRequestBuilder(@javax.annotation.Nonnull List<File> files) throws ApiException {
+      private HttpRequest.Builder testBodyMultipartFormdataArrayOfBinaryRequestBuilder(@javax.annotation.Nonnull List<File> files) throws ApiException {
     // verify the required parameter 'files' is set
     if (files == null) {
       throw new ApiException(400, "Missing the required parameter 'files' when calling testBodyMultipartFormdataArrayOfBinary");
@@ -316,7 +311,7 @@ public class BodyApi {
 
     String localVarPath = "/body/application/octetstream/array_of_binary";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
@@ -356,11 +351,13 @@ public class BodyApi {
     localVarRequestBuilder
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", formDataPublisher);
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -385,13 +382,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testBodyMultipartFormdataSingleBinaryWithHttpInfo(@javax.annotation.Nullable File myFile) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testBodyMultipartFormdataSingleBinaryRequestBuilder(myFile);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -421,13 +419,13 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testBodyMultipartFormdataSingleBinaryRequestBuilder(@javax.annotation.Nullable File myFile) throws ApiException {
+      private HttpRequest.Builder testBodyMultipartFormdataSingleBinaryRequestBuilder(@javax.annotation.Nullable File myFile) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/body/application/octetstream/single_binary";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
@@ -465,11 +463,13 @@ public class BodyApi {
     localVarRequestBuilder
         .header("Content-Type", entity.getContentType().getValue())
         .method("POST", formDataPublisher);
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -494,13 +494,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Pet> testEchoBodyAllOfPetWithHttpInfo(@javax.annotation.Nullable Pet pet) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEchoBodyAllOfPetRequestBuilder(pet);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -520,7 +521,7 @@ public class BodyApi {
         return new ApiResponse<Pet>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Pet>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Pet>() {})
         );
       } finally {
       }
@@ -533,28 +534,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testEchoBodyAllOfPetRequestBuilder(@javax.annotation.Nullable Pet pet) throws ApiException {
+      private HttpRequest.Builder testEchoBodyAllOfPetRequestBuilder(@javax.annotation.Nullable Pet pet) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/echo/body/allOf/Pet";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(pet);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(pet);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -579,13 +582,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testEchoBodyFreeFormObjectResponseStringWithHttpInfo(@javax.annotation.Nullable Object body) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEchoBodyFreeFormObjectResponseStringRequestBuilder(body);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -615,28 +619,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testEchoBodyFreeFormObjectResponseStringRequestBuilder(@javax.annotation.Nullable Object body) throws ApiException {
+      private HttpRequest.Builder testEchoBodyFreeFormObjectResponseStringRequestBuilder(@javax.annotation.Nullable Object body) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/echo/body/FreeFormObject/response_string";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "text/plain");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(body);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(body);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -661,13 +667,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Pet> testEchoBodyPetWithHttpInfo(@javax.annotation.Nullable Pet pet) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEchoBodyPetRequestBuilder(pet);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -687,7 +694,7 @@ public class BodyApi {
         return new ApiResponse<Pet>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Pet>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Pet>() {})
         );
       } finally {
       }
@@ -700,28 +707,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testEchoBodyPetRequestBuilder(@javax.annotation.Nullable Pet pet) throws ApiException {
+      private HttpRequest.Builder testEchoBodyPetRequestBuilder(@javax.annotation.Nullable Pet pet) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/echo/body/Pet";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(pet);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(pet);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -746,13 +755,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testEchoBodyPetResponseStringWithHttpInfo(@javax.annotation.Nullable Pet pet) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEchoBodyPetResponseStringRequestBuilder(pet);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -782,28 +792,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testEchoBodyPetResponseStringRequestBuilder(@javax.annotation.Nullable Pet pet) throws ApiException {
+      private HttpRequest.Builder testEchoBodyPetResponseStringRequestBuilder(@javax.annotation.Nullable Pet pet) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/echo/body/Pet/response_string";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "text/plain");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(pet);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(pet);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -828,13 +840,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<StringEnumRef> testEchoBodyStringEnumWithHttpInfo(@javax.annotation.Nullable String body) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEchoBodyStringEnumRequestBuilder(body);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -854,7 +867,7 @@ public class BodyApi {
         return new ApiResponse<StringEnumRef>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<StringEnumRef>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<StringEnumRef>() {})
         );
       } finally {
       }
@@ -867,28 +880,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testEchoBodyStringEnumRequestBuilder(@javax.annotation.Nullable String body) throws ApiException {
+      private HttpRequest.Builder testEchoBodyStringEnumRequestBuilder(@javax.annotation.Nullable String body) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/echo/body/string_enum";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(body);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(body);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -913,13 +928,14 @@ public class BodyApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testEchoBodyTagResponseStringWithHttpInfo(@javax.annotation.Nullable Tag tag) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEchoBodyTagResponseStringRequestBuilder(tag);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -949,28 +965,30 @@ public class BodyApi {
     }
   }
 
-  private HttpRequest.Builder testEchoBodyTagResponseStringRequestBuilder(@javax.annotation.Nullable Tag tag) throws ApiException {
+      private HttpRequest.Builder testEchoBodyTagResponseStringRequestBuilder(@javax.annotation.Nullable Tag tag) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/echo/body/Tag/response_string";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "text/plain");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(tag);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(tag);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

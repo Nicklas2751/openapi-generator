@@ -54,26 +54,14 @@ import java.util.function.Consumer;
 
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class UserApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public UserApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public UserApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -107,13 +95,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> createUserWithHttpInfo(@jakarta.annotation.Nonnull User user) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createUserRequestBuilder(user);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = createUserRequestBuilder(localVarHttpClient, user);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -140,7 +129,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder createUserRequestBuilder(@jakarta.annotation.Nonnull User user) throws ApiException {
+      private HttpRequest.Builder createUserRequestBuilder(HttpClient httpClient, @jakarta.annotation.Nonnull User user) throws ApiException {
     // verify the required parameter 'user' is set
     if (user == null) {
       throw new ApiException(400, "Missing the required parameter 'user' when calling createUser");
@@ -150,22 +139,26 @@ public class UserApi {
 
     String localVarPath = "/user";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -188,13 +181,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> createUsersWithArrayInputWithHttpInfo(@jakarta.annotation.Nonnull List<User> user) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createUsersWithArrayInputRequestBuilder(user);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = createUsersWithArrayInputRequestBuilder(localVarHttpClient, user);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -221,7 +215,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder createUsersWithArrayInputRequestBuilder(@jakarta.annotation.Nonnull List<User> user) throws ApiException {
+      private HttpRequest.Builder createUsersWithArrayInputRequestBuilder(HttpClient httpClient, @jakarta.annotation.Nonnull List<User> user) throws ApiException {
     // verify the required parameter 'user' is set
     if (user == null) {
       throw new ApiException(400, "Missing the required parameter 'user' when calling createUsersWithArrayInput");
@@ -231,22 +225,26 @@ public class UserApi {
 
     String localVarPath = "/user/createWithArray";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -269,13 +267,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> createUsersWithListInputWithHttpInfo(@jakarta.annotation.Nonnull List<User> user) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createUsersWithListInputRequestBuilder(user);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = createUsersWithListInputRequestBuilder(localVarHttpClient, user);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -302,7 +301,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder createUsersWithListInputRequestBuilder(@jakarta.annotation.Nonnull List<User> user) throws ApiException {
+      private HttpRequest.Builder createUsersWithListInputRequestBuilder(HttpClient httpClient, @jakarta.annotation.Nonnull List<User> user) throws ApiException {
     // verify the required parameter 'user' is set
     if (user == null) {
       throw new ApiException(400, "Missing the required parameter 'user' when calling createUsersWithListInput");
@@ -312,22 +311,26 @@ public class UserApi {
 
     String localVarPath = "/user/createWithList";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -350,13 +353,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> deleteUserWithHttpInfo(@jakarta.annotation.Nonnull String username) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = deleteUserRequestBuilder(username);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = deleteUserRequestBuilder(localVarHttpClient, username);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -383,7 +387,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder deleteUserRequestBuilder(@jakarta.annotation.Nonnull String username) throws ApiException {
+      private HttpRequest.Builder deleteUserRequestBuilder(HttpClient httpClient, @jakarta.annotation.Nonnull String username) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling deleteUser");
@@ -394,16 +398,20 @@ public class UserApi {
     String localVarPath = "/user/{username}"
         .replace("{username}", ApiClient.urlEncode(username.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -428,13 +436,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<User> getUserByNameWithHttpInfo(@jakarta.annotation.Nonnull String username) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = getUserByNameRequestBuilder(username);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -454,7 +463,7 @@ public class UserApi {
         return new ApiResponse<User>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<User>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<User>() {})
         );
       } finally {
       }
@@ -467,7 +476,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder getUserByNameRequestBuilder(@jakarta.annotation.Nonnull String username) throws ApiException {
+      private HttpRequest.Builder getUserByNameRequestBuilder(@jakarta.annotation.Nonnull String username) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling getUserByName");
@@ -478,16 +487,18 @@ public class UserApi {
     String localVarPath = "/user/{username}"
         .replace("{username}", ApiClient.urlEncode(username.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -514,13 +525,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> loginUserWithHttpInfo(@jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = loginUserRequestBuilder(username, password);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -540,7 +552,7 @@ public class UserApi {
         return new ApiResponse<String>(
             localVarResponse.statusCode(),
             localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {})
+            responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<String>() {})
         );
       } finally {
       }
@@ -553,7 +565,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder loginUserRequestBuilder(@jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password) throws ApiException {
+      private HttpRequest.Builder loginUserRequestBuilder(@jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull String password) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling loginUser");
@@ -581,19 +593,21 @@ public class UserApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -614,13 +628,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> logoutUserWithHttpInfo() throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = logoutUserRequestBuilder();
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = logoutUserRequestBuilder(localVarHttpClient);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -647,22 +662,26 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder logoutUserRequestBuilder() throws ApiException {
+      private HttpRequest.Builder logoutUserRequestBuilder(HttpClient httpClient) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/user/logout";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -687,13 +706,14 @@ public class UserApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<Void> updateUserWithHttpInfo(@jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull User user) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updateUserRequestBuilder(username, user);
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+    HttpRequest.Builder localVarRequestBuilder = updateUserRequestBuilder(localVarHttpClient, username, user);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -720,7 +740,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder updateUserRequestBuilder(@jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull User user) throws ApiException {
+      private HttpRequest.Builder updateUserRequestBuilder(HttpClient httpClient, @jakarta.annotation.Nonnull String username, @jakarta.annotation.Nonnull User user) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling updateUser");
@@ -735,22 +755,26 @@ public class UserApi {
     String localVarPath = "/user/{username}"
         .replace("{username}", ApiClient.urlEncode(username.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

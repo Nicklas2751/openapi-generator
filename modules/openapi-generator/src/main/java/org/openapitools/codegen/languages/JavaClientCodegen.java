@@ -475,7 +475,7 @@ public class JavaClientCodegen extends AbstractJavaCodegen
         }
 
         // google-api-client doesn't use the OpenAPI auth, because it uses Google Credential directly (HttpRequestInitializer)
-        if (!(libGoogleApiClient || libRestAssured || libNative || libMicroprofile)) {
+        if (!(libGoogleApiClient || libRestAssured || libMicroprofile)) {
             supportingFiles.add(new SupportingFile("auth/HttpBasicAuth.mustache", authFolder, "HttpBasicAuth.java"));
             supportingFiles.add(new SupportingFile("auth/HttpBearerAuth.mustache", authFolder, "HttpBearerAuth.java"));
             supportingFiles.add(new SupportingFile("auth/ApiKeyAuth.mustache", authFolder, "ApiKeyAuth.java"));
@@ -519,7 +519,7 @@ public class JavaClientCodegen extends AbstractJavaCodegen
             supportingFiles.add(new SupportingFile("Pair.mustache", invokerFolder, "Pair.java"));
         }
 
-        if (!(libFeign || libRestTemplate || libRetrofit2 || libGoogleApiClient || libRestAssured || libNative || libMicroprofile)) {
+        if (!(libFeign || libRestTemplate || libRetrofit2 || libGoogleApiClient || libRestAssured || libMicroprofile)) {
             supportingFiles.add(new SupportingFile("auth/Authentication.mustache", authFolder, "Authentication.java"));
         }
 
@@ -611,6 +611,9 @@ public class JavaClientCodegen extends AbstractJavaCodegen
             setUseJakartaEe(true);
             applyJakartaPackage();
         } else if (libNative) {
+            if (ProcessUtils.hasHttpSignatureMethods(openAPI)) {
+                supportingFiles.add(new SupportingFile("auth/HttpSignatureAuth.mustache", authFolder, "HttpSignatureAuth.java"));
+            }
             supportingFiles.add(new SupportingFile("ApiResponse.mustache", invokerFolder, "ApiResponse.java"));
             supportingFiles.add(new SupportingFile("JSON.mustache", invokerFolder, "JSON.java"));
             supportingFiles.add(new SupportingFile("AbstractOpenApiSchema.mustache", modelsFolder, "AbstractOpenApiSchema.java"));
@@ -781,7 +784,7 @@ public class JavaClientCodegen extends AbstractJavaCodegen
             }
 
             // google-api-client doesn't use the OpenAPI auth, because it uses Google Credential directly (HttpRequestInitializer)
-            if (!(libGoogleApiClient || libRestAssured || usePlayWS || libNative || libMicroprofile)) {
+            if (!(libGoogleApiClient || libRestAssured || usePlayWS || libMicroprofile)) {
                 supportingFiles.add(new SupportingFile("auth/OAuth.mustache", authFolder, "OAuth.java"));
                 supportingFiles.add(new SupportingFile("auth/OAuthFlow.mustache", authFolder, "OAuthFlow.java"));
             }

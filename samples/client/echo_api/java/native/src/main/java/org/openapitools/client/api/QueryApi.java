@@ -59,26 +59,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class QueryApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public QueryApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public QueryApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -116,13 +104,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testEnumRefStringWithHttpInfo(@javax.annotation.Nullable String enumNonrefStringQuery, @javax.annotation.Nullable StringEnumRef enumRefStringQuery) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testEnumRefStringRequestBuilder(enumNonrefStringQuery, enumRefStringQuery);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -152,7 +141,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testEnumRefStringRequestBuilder(@javax.annotation.Nullable String enumNonrefStringQuery, @javax.annotation.Nullable StringEnumRef enumRefStringQuery) throws ApiException {
+      private HttpRequest.Builder testEnumRefStringRequestBuilder(@javax.annotation.Nullable String enumNonrefStringQuery, @javax.annotation.Nullable StringEnumRef enumRefStringQuery) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -172,19 +161,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -213,13 +204,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryDatetimeDateStringWithHttpInfo(@javax.annotation.Nullable Instant datetimeQuery, @javax.annotation.Nullable LocalDate dateQuery, @javax.annotation.Nullable String stringQuery) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryDatetimeDateStringRequestBuilder(datetimeQuery, dateQuery, stringQuery);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -249,7 +241,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryDatetimeDateStringRequestBuilder(@javax.annotation.Nullable Instant datetimeQuery, @javax.annotation.Nullable LocalDate dateQuery, @javax.annotation.Nullable String stringQuery) throws ApiException {
+      private HttpRequest.Builder testQueryDatetimeDateStringRequestBuilder(@javax.annotation.Nullable Instant datetimeQuery, @javax.annotation.Nullable LocalDate dateQuery, @javax.annotation.Nullable String stringQuery) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -271,19 +263,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -312,13 +306,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryIntegerBooleanStringWithHttpInfo(@javax.annotation.Nullable Integer integerQuery, @javax.annotation.Nullable Boolean booleanQuery, @javax.annotation.Nullable String stringQuery) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryIntegerBooleanStringRequestBuilder(integerQuery, booleanQuery, stringQuery);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -348,7 +343,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryIntegerBooleanStringRequestBuilder(@javax.annotation.Nullable Integer integerQuery, @javax.annotation.Nullable Boolean booleanQuery, @javax.annotation.Nullable String stringQuery) throws ApiException {
+      private HttpRequest.Builder testQueryIntegerBooleanStringRequestBuilder(@javax.annotation.Nullable Integer integerQuery, @javax.annotation.Nullable Boolean booleanQuery, @javax.annotation.Nullable String stringQuery) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -370,19 +365,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -407,13 +404,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleDeepObjectExplodeTrueObjectWithHttpInfo(@javax.annotation.Nullable Pet queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleDeepObjectExplodeTrueObjectRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -443,7 +441,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleDeepObjectExplodeTrueObjectRequestBuilder(@javax.annotation.Nullable Pet queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleDeepObjectExplodeTrueObjectRequestBuilder(@javax.annotation.Nullable Pet queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -466,19 +464,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -503,13 +503,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleDeepObjectExplodeTrueObjectAllOfWithHttpInfo(@javax.annotation.Nullable TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleDeepObjectExplodeTrueObjectAllOfRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -539,7 +540,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleDeepObjectExplodeTrueObjectAllOfRequestBuilder(@javax.annotation.Nullable TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleDeepObjectExplodeTrueObjectAllOfRequestBuilder(@javax.annotation.Nullable TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -562,19 +563,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -599,13 +602,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleFormExplodeFalseArrayIntegerWithHttpInfo(@javax.annotation.Nullable List<Integer> queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleFormExplodeFalseArrayIntegerRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -635,7 +639,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleFormExplodeFalseArrayIntegerRequestBuilder(@javax.annotation.Nullable List<Integer> queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleFormExplodeFalseArrayIntegerRequestBuilder(@javax.annotation.Nullable List<Integer> queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -653,19 +657,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -690,13 +696,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleFormExplodeFalseArrayStringWithHttpInfo(@javax.annotation.Nullable List<String> queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleFormExplodeFalseArrayStringRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -726,7 +733,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleFormExplodeFalseArrayStringRequestBuilder(@javax.annotation.Nullable List<String> queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleFormExplodeFalseArrayStringRequestBuilder(@javax.annotation.Nullable List<String> queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -744,19 +751,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -781,13 +790,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleFormExplodeTrueArrayStringWithHttpInfo(@javax.annotation.Nullable TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleFormExplodeTrueArrayStringRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -817,7 +827,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleFormExplodeTrueArrayStringRequestBuilder(@javax.annotation.Nullable TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleFormExplodeTrueArrayStringRequestBuilder(@javax.annotation.Nullable TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -835,19 +845,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -872,13 +884,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleFormExplodeTrueObjectWithHttpInfo(@javax.annotation.Nullable Pet queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleFormExplodeTrueObjectRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -908,7 +921,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleFormExplodeTrueObjectRequestBuilder(@javax.annotation.Nullable Pet queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleFormExplodeTrueObjectRequestBuilder(@javax.annotation.Nullable Pet queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -931,19 +944,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -968,13 +983,14 @@ public class QueryApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testQueryStyleFormExplodeTrueObjectAllOfWithHttpInfo(@javax.annotation.Nullable DataQuery queryObject) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testQueryStyleFormExplodeTrueObjectAllOfRequestBuilder(queryObject);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -1004,7 +1020,7 @@ public class QueryApi {
     }
   }
 
-  private HttpRequest.Builder testQueryStyleFormExplodeTrueObjectAllOfRequestBuilder(@javax.annotation.Nullable DataQuery queryObject) throws ApiException {
+      private HttpRequest.Builder testQueryStyleFormExplodeTrueObjectAllOfRequestBuilder(@javax.annotation.Nullable DataQuery queryObject) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -1022,19 +1038,21 @@ public class QueryApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

@@ -313,7 +313,9 @@ public class JavaClientCodegenTest {
                 output.resolve("src/main/java/xyz/abcdef/auth/Authentication.java").toFile(),
                 output.resolve("src/main/java/xyz/abcdef/auth/HttpBasicAuth.java").toFile(),
                 output.resolve("src/main/java/xyz/abcdef/auth/HttpBearerAuth.java").toFile(),
-                output.resolve("src/main/java/xyz/abcdef/auth/HttpSignatureAuth.java").toFile()
+                output.resolve("src/main/java/xyz/abcdef/auth/HttpSignatureAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/OAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/OAuthFlow.java").toFile()
         );
     }
 
@@ -543,7 +545,7 @@ public class JavaClientCodegenTest {
 
         List<File> files = new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
 
-        assertThat(files).hasSize(34);
+        assertThat(files).hasSize(38);
         validateJavaSourceFiles(files);
         assertThat(output.resolve("src/main/java/xyz/abcdef/api/DefaultApi.java")).content().contains(
                 "public class DefaultApi",
@@ -613,7 +615,7 @@ public class JavaClientCodegenTest {
 
         List<File> files = new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
 
-        assertThat(files).hasSize(37);
+        assertThat(files).hasSize(41);
 
         validateJavaSourceFiles(files);
         assertThat(output.resolve("src/main/java/xyz/abcdef/api/PingApi.java")).content().contains(
@@ -1434,7 +1436,7 @@ public class JavaClientCodegenTest {
         List<File> files = new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
 
         validateJavaSourceFiles(files);
-        assertThat(files).hasSize(37);
+        assertThat(files).hasSize(41);
         TestUtils.assertFileContains(output.resolve("src/main/java/xyz/abcdef/ApiClient.java"),
                 "public static String urlEncode(String s) { return URLEncoder.encode(s,"
                         + " UTF_8).replaceAll(\"\\\\+\", \"%20\"); }"
@@ -1457,7 +1459,7 @@ public class JavaClientCodegenTest {
         List<File> files = new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
 
         validateJavaSourceFiles(files);
-        assertThat(files).hasSize(40);
+        assertThat(files).hasSize(44);
         assertThat(output.resolve("src/main/java/xyz/abcdef/api/DefaultApi.java")).content()
                 .contains(
                         "localVarQueryParams.addAll(ApiClient.parameterToPairs(\"since\", queryObject.getSince()));",
@@ -3430,7 +3432,7 @@ public class JavaClientCodegenTest {
         JavaFileAssert.assertThat(apiFile).fileContains(
                 //reading the body into a string, then checking if it is blank.
                 "String responseBody = new String(localVarResponse.body().readAllBytes());",
-                "responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LocationData>() {})"
+                "responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<LocationData>() {})"
         );
     }
 
@@ -3467,7 +3469,7 @@ public class JavaClientCodegenTest {
         JavaFileAssert.assertThat(apiFile).fileDoesNotContain(
                 //reading the body into a string, then checking if it is blank.
                 "String responseBody = new String(localVarResponse.body().readAllBytes());",
-                "responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LocationData>() {})"
+                "responseBody.isBlank()? null: memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<LocationData>() {})"
         );
     }
 
@@ -3699,4 +3701,64 @@ public class JavaClientCodegenTest {
         TestUtils.assertFileNotContains(output.resolve("src/main/java/xyz/abcdef/api/PetApi.java"),
                 "public record DeletePetRequest(Long petId, String apiKey){}");
     }
+
+    @Test
+    public void  testNativeGeneratesAuthenticationClasses() {
+        // given
+        final Path output = newTempFolder();
+        final CodegenConfigurator configurator = new CodegenConfigurator()
+                .setGeneratorName("java")
+                .setLibrary(NATIVE)
+                .setAdditionalProperties(Map.of(CodegenConstants.API_PACKAGE, "xyz.abcdef.api"))
+                .setInputSpec("src/test/resources/3_0/petstore-with-fake-endpoints-models-for-testing-with-http-signature.yaml")
+                .setOutputDir(output.toString().replace("\\", "/"));
+
+        // when
+        List<File> files = new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
+
+        // then
+        assertThat(files).contains(
+                output.resolve("src/main/java/xyz/abcdef/auth/ApiKeyAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/Authentication.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/HttpBasicAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/HttpBearerAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/HttpSignatureAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/OAuth.java").toFile(),
+                output.resolve("src/main/java/xyz/abcdef/auth/OAuthFlow.java").toFile()
+        );
+    }
+
+    @Test
+    public void  testNativeGeneratesAuthenticationCodeInApiClient() {
+        // given
+        final Path output = newTempFolder();
+        final CodegenConfigurator configurator = new CodegenConfigurator()
+                .setGeneratorName("java")
+                .setLibrary(NATIVE)
+                .setAdditionalProperties(Map.of(CodegenConstants.API_PACKAGE, "xyz.abcdef.api"))
+                .setInputSpec("src/test/resources/3_0/petstore-with-fake-endpoints-models-for-testing-with-http-signature.yaml")
+                .setOutputDir(output.toString().replace("\\", "/"));
+
+        // when
+        new DefaultGenerator().opts(configurator.toClientOptInput()).generate();
+
+        // then
+        TestUtils.assertFileContains(
+                output.resolve("src/main/java/xyz/abcdef/ApiClient.java"),
+                "import com.github.scribejava.core.model.OAuth2AccessToken;",
+                "import xyz.abcdef.auth.Authentication;",
+                "import xyz.abcdef.auth.HttpBasicAuth;",
+                "import xyz.abcdef.auth.HttpBearerAuth;",
+                "import xyz.abcdef.auth.HttpSignatureAuth;",
+                "import xyz.abcdef.auth.ApiKeyAuth;",
+                "import xyz.abcdef.auth.OAuth;",
+                "public ApiClient(Map<String, Authentication> authMap) {",
+                "if (auth instanceof HttpBasicAuth) {",
+                "if (auth instanceof HttpBearerAuth) {",
+                "if (auth instanceof HttpSignatureAuth) {",
+                "if (auth instanceof ApiKeyAuth) {",
+                "if (auth instanceof OAuth) {"
+        );
+    }
+
 }

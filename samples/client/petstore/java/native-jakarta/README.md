@@ -84,6 +84,11 @@ public class PetApiExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Configure clients using the `defaultClient` object, such as
         // overriding the host and port, timeout, etc.
+        
+        // Configure OAuth2 access token for authorization: petstore_auth
+        OAuth petstore_auth = (OAuth) defaultClient.getAuthentication("petstore_auth");
+        petstore_auth.setAccessToken("YOUR ACCESS TOKEN");
+
         PetApi apiInstance = new PetApi(defaultClient);
         Pet pet = new Pet(); // Pet | Pet object that needs to be added to the store
         try {

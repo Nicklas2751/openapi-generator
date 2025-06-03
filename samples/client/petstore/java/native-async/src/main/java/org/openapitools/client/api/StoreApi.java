@@ -55,26 +55,14 @@ import java.util.concurrent.CompletableFuture;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class StoreApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public StoreApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public StoreApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   private ApiException getApiException(String operationId, HttpResponse<String> response) {
@@ -98,8 +86,9 @@ public class StoreApi {
    */
   public CompletableFuture<Void> deleteOrder(@javax.annotation.Nonnull String orderId) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = deleteOrderRequestBuilder(orderId);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -122,12 +111,13 @@ public class StoreApi {
    */
   public CompletableFuture<ApiResponse<Void>> deleteOrderWithHttpInfo(@javax.annotation.Nonnull String orderId) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = deleteOrderRequestBuilder(orderId);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("deleteOrder", localVarResponse));
@@ -143,7 +133,7 @@ public class StoreApi {
     }
   }
 
-  private HttpRequest.Builder deleteOrderRequestBuilder(@javax.annotation.Nonnull String orderId) throws ApiException {
+      private HttpRequest.Builder deleteOrderRequestBuilder(@javax.annotation.Nonnull String orderId) throws ApiException {
     // verify the required parameter 'orderId' is set
     if (orderId == null) {
       throw new ApiException(400, "Missing the required parameter 'orderId' when calling deleteOrder");
@@ -154,16 +144,18 @@ public class StoreApi {
     String localVarPath = "/store/order/{order_id}"
         .replace("{order_id}", ApiClient.urlEncode(orderId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -176,8 +168,9 @@ public class StoreApi {
    */
   public CompletableFuture<Map<String, Integer>> getInventory() throws ApiException {
     try {
-      HttpRequest.Builder localVarRequestBuilder = getInventoryRequestBuilder();
-      return memberVarHttpClient.sendAsync(
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+      HttpRequest.Builder localVarRequestBuilder = getInventoryRequestBuilder(localVarHttpClient);
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -186,7 +179,7 @@ public class StoreApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Map<String, Integer>>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Map<String, Integer>>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -206,12 +199,13 @@ public class StoreApi {
    */
   public CompletableFuture<ApiResponse<Map<String, Integer>>> getInventoryWithHttpInfo() throws ApiException {
     try {
-      HttpRequest.Builder localVarRequestBuilder = getInventoryRequestBuilder();
-      return memberVarHttpClient.sendAsync(
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
+      HttpRequest.Builder localVarRequestBuilder = getInventoryRequestBuilder(localVarHttpClient);
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("getInventory", localVarResponse));
@@ -222,7 +216,7 @@ public class StoreApi {
                   new ApiResponse<Map<String, Integer>>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Map<String, Integer>>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Map<String, Integer>>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -235,22 +229,26 @@ public class StoreApi {
     }
   }
 
-  private HttpRequest.Builder getInventoryRequestBuilder() throws ApiException {
+      private HttpRequest.Builder getInventoryRequestBuilder(HttpClient httpClient) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/store/inventory";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    List<String> localVarAuthNames = List.of("api_key");
+    memberVarApiClient.applySecurityAuthentication(localVarRequestBuilder, httpClient, localVarAuthNames);
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -264,8 +262,9 @@ public class StoreApi {
    */
   public CompletableFuture<Order> getOrderById(@javax.annotation.Nonnull Long orderId) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = getOrderByIdRequestBuilder(orderId);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -274,7 +273,7 @@ public class StoreApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Order>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Order>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -295,12 +294,13 @@ public class StoreApi {
    */
   public CompletableFuture<ApiResponse<Order>> getOrderByIdWithHttpInfo(@javax.annotation.Nonnull Long orderId) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = getOrderByIdRequestBuilder(orderId);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("getOrderById", localVarResponse));
@@ -311,7 +311,7 @@ public class StoreApi {
                   new ApiResponse<Order>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Order>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Order>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -324,7 +324,7 @@ public class StoreApi {
     }
   }
 
-  private HttpRequest.Builder getOrderByIdRequestBuilder(@javax.annotation.Nonnull Long orderId) throws ApiException {
+      private HttpRequest.Builder getOrderByIdRequestBuilder(@javax.annotation.Nonnull Long orderId) throws ApiException {
     // verify the required parameter 'orderId' is set
     if (orderId == null) {
       throw new ApiException(400, "Missing the required parameter 'orderId' when calling getOrderById");
@@ -335,16 +335,18 @@ public class StoreApi {
     String localVarPath = "/store/order/{order_id}"
         .replace("{order_id}", ApiClient.urlEncode(orderId.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -358,8 +360,9 @@ public class StoreApi {
    */
   public CompletableFuture<Order> placeOrder(@javax.annotation.Nonnull Order order) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = placeOrderRequestBuilder(order);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -368,7 +371,7 @@ public class StoreApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Order>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Order>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -389,12 +392,13 @@ public class StoreApi {
    */
   public CompletableFuture<ApiResponse<Order>> placeOrderWithHttpInfo(@javax.annotation.Nonnull Order order) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = placeOrderRequestBuilder(order);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("placeOrder", localVarResponse));
@@ -405,7 +409,7 @@ public class StoreApi {
                   new ApiResponse<Order>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<Order>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<Order>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -418,7 +422,7 @@ public class StoreApi {
     }
   }
 
-  private HttpRequest.Builder placeOrderRequestBuilder(@javax.annotation.Nonnull Order order) throws ApiException {
+      private HttpRequest.Builder placeOrderRequestBuilder(@javax.annotation.Nonnull Order order) throws ApiException {
     // verify the required parameter 'order' is set
     if (order == null) {
       throw new ApiException(400, "Missing the required parameter 'order' when calling placeOrder");
@@ -428,22 +432,24 @@ public class StoreApi {
 
     String localVarPath = "/store/order";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(order);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(order);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

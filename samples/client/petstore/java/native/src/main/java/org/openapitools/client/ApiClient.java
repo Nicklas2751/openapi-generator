@@ -17,9 +17,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 
 import java.io.InputStream;
+import java.net.CookieManager;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -29,12 +31,22 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import org.openapitools.client.auth.Authentication;
+import org.openapitools.client.auth.HttpBasicAuth;
+import org.openapitools.client.auth.HttpBearerAuth;
+import org.openapitools.client.auth.HttpSignatureAuth;
+import org.openapitools.client.auth.ApiKeyAuth;
+import org.openapitools.client.auth.OAuth;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -65,6 +77,9 @@ public class ApiClient {
   protected Consumer<HttpResponse<String>> asyncResponseInterceptor;
   protected Duration readTimeout;
   protected Duration connectTimeout;
+  protected Map<String, Authentication> authentications;
+  protected Map<String, String> authenticationLookup;
+
 
   public static String valueToString(Object value) {
     if (value == null) {
@@ -164,14 +179,7 @@ public class ApiClient {
    * Create an instance of ApiClient.
    */
   public ApiClient() {
-    this.builder = createDefaultHttpClientBuilder();
-    this.mapper = createDefaultObjectMapper();
-    updateBaseUri(getDefaultBaseUri());
-    interceptor = null;
-    readTimeout = null;
-    connectTimeout = null;
-    responseInterceptor = null;
-    asyncResponseInterceptor = null;
+    this(createDefaultHttpClientBuilder(), createDefaultObjectMapper(), getDefaultBaseUri());
   }
 
   /**
@@ -182,14 +190,90 @@ public class ApiClient {
    * @param baseUri Base URI
    */
   public ApiClient(HttpClient.Builder builder, ObjectMapper mapper, String baseUri) {
+    this(builder, mapper, baseUri, null);
+  }
+
+  /**
+   * Constructs a new ApiClient with the specified authentication parameters.
+   *
+   * @param authMap A hash map containing authentication parameters.
+   */
+  public ApiClient(Map<String, Authentication> authMap) {
+    this(createDefaultHttpClientBuilder(), createDefaultObjectMapper(), getDefaultBaseUri(), null);
+  }
+
+  /**
+   * Constructs a new ApiClient with the specified authentication parameters.
+   *
+   * @param builder Http client builder.
+   * @param mapper Object mapper.
+   * @param baseUri Base URI
+   * @param authMap A hash map containing authentication parameters.
+   */
+  public ApiClient(HttpClient.Builder builder, ObjectMapper mapper, String baseUri, Map<String, Authentication> authMap) {
     this.builder = builder;
     this.mapper = mapper;
-    updateBaseUri(baseUri != null ? baseUri : getDefaultBaseUri());
-    interceptor = null;
-    readTimeout = null;
-    connectTimeout = null;
-    responseInterceptor = null;
-    asyncResponseInterceptor = null;
+    // Setup authentications (key: authentication name, value: authentication).
+    this.authentications = new HashMap<>();
+    this.updateBaseUri(baseUri != null ? baseUri : getDefaultBaseUri());
+    this.interceptor = null;
+    this.readTimeout = null;
+    this.connectTimeout = null;
+    this.responseInterceptor = null;
+    this.asyncResponseInterceptor = null;
+
+    Authentication auth = null;
+    if (authMap != null) {
+      auth = authMap.get("petstore_auth");
+    }
+    if (auth instanceof OAuth) {
+      authentications.put("petstore_auth", auth);
+    } else {
+      authentications.put("petstore_auth", new OAuth(getBaseUri(), ""));
+    }
+    if (authMap != null) {
+      auth = authMap.get("api_key");
+    }
+    if (auth instanceof ApiKeyAuth) {
+      authentications.put("api_key", auth);
+    } else {
+      authentications.put("api_key", new ApiKeyAuth(ApiKeyAuth.ApiKeyLocation.HEADER, "api_key"));
+    }
+    if (authMap != null) {
+      auth = authMap.get("api_key_query");
+    }
+    if (auth instanceof ApiKeyAuth) {
+      authentications.put("api_key_query", auth);
+    } else {
+      authentications.put("api_key_query", new ApiKeyAuth(ApiKeyAuth.ApiKeyLocation.QUERY, "api_key_query"));
+    }
+    if (authMap != null) {
+      auth = authMap.get("http_basic_test");
+    }
+    if (auth instanceof HttpBasicAuth) {
+      authentications.put("http_basic_test", auth);
+    } else {
+      authentications.put("http_basic_test", new HttpBasicAuth());
+    }
+    if (authMap != null) {
+      auth = authMap.get("bearer_test");
+    }
+    if (auth instanceof HttpBearerAuth) {
+      authentications.put("bearer_test", auth);
+    } else {
+      authentications.put("bearer_test", new HttpBearerAuth("bearer"));
+    }
+    if (authMap != null) {
+      auth = authMap.get("http_signature_test");
+    }
+    if (auth instanceof HttpSignatureAuth) {
+      authentications.put("http_signature_test", auth);
+    }
+    // Prevent the authentications from being modified.
+    authentications = Collections.unmodifiableMap(authentications);
+
+    // Setup authentication lookup (key: authentication alias, value: authentication name)
+    authenticationLookup = new HashMap<>();
   }
 
   public static ObjectMapper createDefaultObjectMapper() {
@@ -207,7 +291,7 @@ public class ApiClient {
     return mapper;
   }
 
-  protected String getDefaultBaseUri() {
+  protected static String getDefaultBaseUri() {
     return "http://petstore.swagger.io:80/v2";
   }
 
@@ -221,6 +305,7 @@ public class ApiClient {
     host = uri.getHost();
     port = uri.getPort();
     basePath = uri.getRawPath();
+    setOauthBaseUri(baseUri);
   }
 
   /**
@@ -454,4 +539,264 @@ public class ApiClient {
   public Duration getConnectTimeout() {
     return connectTimeout;
   }
+
+  protected void setOauthBaseUri(String baseUri) {
+    for(Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).setBaseUri(baseUri);
+      }
+    }
+  }
+
+  /**
+   * Get authentications (key: authentication name, value: authentication).
+   *
+   * @return Map of authentication object
+   */
+  public Map<String, Authentication> getAuthentications() {
+    return authentications;
+  }
+
+  /**
+   * Get authentication for the given name.
+   *
+   * @param authName The authentication name
+   * @return The authentication, null if not found
+   */
+  public Authentication getAuthentication(String authName) {
+    return authentications.get(authName);
+  }
+
+  /**
+   * Helper method to set username for the first HTTP basic authentication.
+   *
+   * @param username Username
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setUsername(String username) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof HttpBasicAuth) {
+        ((HttpBasicAuth) auth).setUsername(username);
+        return this;
+      }
+    }
+    throw new RuntimeException("No HTTP basic authentication configured!");
+  }
+
+  /**
+   * Helper method to set password for the first HTTP basic authentication.
+   *
+   * @param password Password
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setPassword(String password) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof HttpBasicAuth) {
+        ((HttpBasicAuth) auth).setPassword(password);
+        return this;
+      }
+    }
+    throw new RuntimeException("No HTTP basic authentication configured!");
+  }
+
+  /**
+   * Helper method to set API key value for the first API key authentication.
+   *
+   * @param apiKey API key
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setApiKey(String apiKey) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof ApiKeyAuth) {
+        ((ApiKeyAuth) auth).setApiKey(apiKey);
+        return this;
+      }
+    }
+    throw new RuntimeException("No API key authentication configured!");
+  }
+
+  /**
+   * Helper method to configure authentications which respects aliases of API keys.
+   *
+   * @param secrets Hash map from authentication name to its secret.
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient configureApiKeys(Map<String, String> secrets) {
+    for (Map.Entry<String, Authentication> authEntry : authentications.entrySet()) {
+      Authentication auth = authEntry.getValue();
+      if (auth instanceof ApiKeyAuth) {
+        String name = authEntry.getKey();
+        // respect x-auth-id-alias property
+        name = authenticationLookup.getOrDefault(name, name);
+        String secret = secrets.get(name);
+        if (secret != null) {
+          ((ApiKeyAuth) auth).setApiKey(secret);
+        }
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Helper method to set API key prefix for the first API key authentication.
+   *
+   * @param apiKeyPrefix API key prefix
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setApiKeyPrefix(String apiKeyPrefix) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof ApiKeyAuth) {
+        ((ApiKeyAuth) auth).setApiKeyPrefix(apiKeyPrefix);
+        return this;
+      }
+    }
+    throw new RuntimeException("No API key authentication configured!");
+  }
+
+  /**
+   * Helper method to set bearer token for the first Bearer authentication.
+   *
+   * @param bearerToken Bearer token
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setBearerToken(String bearerToken) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof HttpBearerAuth) {
+        ((HttpBearerAuth) auth).setBearerToken(bearerToken);
+        return this;
+      }
+    }
+    throw new RuntimeException("No Bearer authentication configured!");
+  }
+
+  /**
+   * Helper method to set access token for the first OAuth2 authentication.
+   *
+   * @param accessToken Access token
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setAccessToken(String accessToken) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).setAccessToken(accessToken);
+        return this;
+      }
+    }
+    throw new RuntimeException("No OAuth2 authentication configured!");
+  }
+
+  /**
+   * Helper method to set the credentials for the first OAuth2 authentication.
+   *
+   * @param clientId the client ID
+   * @param clientSecret the client secret
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setOauthCredentials(String clientId, String clientSecret) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).setCredentials(clientId, clientSecret, false);
+        return this;
+      }
+    }
+    throw new RuntimeException("No OAuth2 authentication configured!");
+  }
+
+  /**
+   * Helper method to set the credentials of a public client for the first OAuth2 authentication.
+   *
+   * @param clientId the client ID
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setOauthCredentialsForPublicClient(String clientId) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).setCredentialsForPublicClient(clientId, false);
+        return this;
+      }
+    }
+    throw new RuntimeException("No OAuth2 authentication configured!");
+  }
+
+  /**
+   * Helper method to set the password flow for the first OAuth2 authentication.
+   *
+   * @param username the user name
+   * @param password the user password
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setOauthPasswordFlow(String username, String password) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).usePasswordFlow(username, password);
+        return this;
+      }
+    }
+    throw new RuntimeException("No OAuth2 authentication configured!");
+  }
+
+  /**
+   * Helper method to set the authorization code flow for the first OAuth2 authentication.
+   *
+   * @param code the authorization code
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setOauthAuthorizationCodeFlow(String code) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).useAuthorizationCodeFlow(code);
+        return this;
+      }
+    }
+    throw new RuntimeException("No OAuth2 authentication configured!");
+  }
+
+  /**
+   * Helper method to set the scopes for the first OAuth2 authentication.
+   *
+   * @param scope the oauth scope
+   * @return a {@link ApiClient} object.
+   */
+  public ApiClient setOauthScope(String scope) {
+    for (Authentication auth : authentications.values()) {
+      if (auth instanceof OAuth) {
+        ((OAuth) auth).setScope(scope);
+        return this;
+      }
+    }
+    throw new RuntimeException("No OAuth2 authentication configured!");
+  }
+
+
+  /**
+   * Applies security authenticatios for the given authentication names to the given request builder.
+   *
+   * @param requestBuilder the request builder
+   * @param httpClient the HTTP client
+   * @param authNames the list of authentication names
+   */
+  public void applySecurityAuthentication(final HttpRequest.Builder requestBuilder, final HttpClient httpClient, final List<String> authNames) throws ApiException {
+    if (authNames == null || authNames.isEmpty()) {
+      return;
+    }
+
+    for (String authName : authNames) {
+      var auth = authentications.get(authName);
+      if(auth != null) {
+        applySecurityAuthentication(requestBuilder, httpClient, auth);
+      }
+    }
+  }
+
+  /**
+  * Applies given authentication to the given request builder.
+  *
+  * @param requestBuilder the request builder
+  * @param httpClient the HTTP client
+  * @param authentication the authentication to apply
+  */
+  private void applySecurityAuthentication(final HttpRequest.Builder requestBuilder, final HttpClient httpClient, Authentication authentication) throws ApiException {
+    authentication.applyToParams(requestBuilder, httpClient);
+  }
+
 }

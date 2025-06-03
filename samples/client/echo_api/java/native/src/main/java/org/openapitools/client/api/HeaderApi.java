@@ -53,26 +53,14 @@ import java.util.function.Consumer;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class HeaderApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public HeaderApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public HeaderApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
@@ -116,13 +104,14 @@ public class HeaderApi {
    * @throws ApiException if fails to make API call
    */
   public ApiResponse<String> testHeaderIntegerBooleanStringEnumsWithHttpInfo(@javax.annotation.Nullable Integer integerHeader, @javax.annotation.Nullable Boolean booleanHeader, @javax.annotation.Nullable String stringHeader, @javax.annotation.Nullable String enumNonrefStringHeader, @javax.annotation.Nullable StringEnumRef enumRefStringHeader) throws ApiException {
+    HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
     HttpRequest.Builder localVarRequestBuilder = testHeaderIntegerBooleanStringEnumsRequestBuilder(integerHeader, booleanHeader, stringHeader, enumNonrefStringHeader, enumRefStringHeader);
     try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+      HttpResponse<InputStream> localVarResponse = localVarHttpClient.send(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
+      if (memberVarApiClient.getResponseInterceptor() != null) {
+        memberVarApiClient.getResponseInterceptor().accept(localVarResponse);
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
@@ -152,13 +141,13 @@ public class HeaderApi {
     }
   }
 
-  private HttpRequest.Builder testHeaderIntegerBooleanStringEnumsRequestBuilder(@javax.annotation.Nullable Integer integerHeader, @javax.annotation.Nullable Boolean booleanHeader, @javax.annotation.Nullable String stringHeader, @javax.annotation.Nullable String enumNonrefStringHeader, @javax.annotation.Nullable StringEnumRef enumRefStringHeader) throws ApiException {
+      private HttpRequest.Builder testHeaderIntegerBooleanStringEnumsRequestBuilder(@javax.annotation.Nullable Integer integerHeader, @javax.annotation.Nullable Boolean booleanHeader, @javax.annotation.Nullable String stringHeader, @javax.annotation.Nullable String enumNonrefStringHeader, @javax.annotation.Nullable StringEnumRef enumRefStringHeader) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/header/integer/boolean/string/enums";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     if (integerHeader != null) {
       localVarRequestBuilder.header("integer_header", integerHeader.toString());
@@ -178,11 +167,13 @@ public class HeaderApi {
     localVarRequestBuilder.header("Accept", "text/plain");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

@@ -70,7 +70,10 @@ ext {
     jakarta_annotation_version = "2.1.1"
     beanvalidation_version = "3.0.2"
     junit_version = "5.10.2"
+    assertj_core_version = "3.27.3"
     httpmime_version = "4.5.13"
+    mockito_core_version = "5.14.2"
+    logcaptor_version = "2.11.0"
 }
 
 dependencies {
@@ -83,6 +86,10 @@ dependencies {
     implementation "jakarta.annotation:jakarta.annotation-api:$jakarta_annotation_version"
     implementation "org.apache.httpcomponents:httpmime:$httpmime_version"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    testImplementation "org.assertj:assertj-core:$assertj_core_version"
+    testImplementation "org.mockito:mockito-core:$mockito_core_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit_version"
+    testImplementation "io.github.hakky54:logcaptor:$logcaptor_version"
 }
 
 // Use spotless plugin to automatically format code, remove unused import, etc

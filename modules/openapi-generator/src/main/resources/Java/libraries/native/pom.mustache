@@ -242,6 +242,20 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable-version}</version>
         </dependency>
+        {{#hasHttpSignatureMethods}}
+            <dependency>
+                <groupId>org.tomitribe</groupId>
+                <artifactId>tomitribe-http-signatures</artifactId>
+                <version>${http-signature-version}</version>
+            </dependency>
+        {{/hasHttpSignatureMethods}}
+        {{#hasOAuthMethods}}
+            <dependency>
+                <groupId>com.github.scribejava</groupId>
+                <artifactId>scribejava-apis</artifactId>
+                <version>${scribejava-apis-version}</version>
+            </dependency>
+        {{/hasOAuthMethods}}
 
         <!-- @Nullable annotation -->
         <dependency>
@@ -287,6 +301,32 @@
             <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        {{#hasAuthMethods}}
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.hakky54</groupId>
+            <artifactId>logcaptor</artifactId>
+            <version>${logcaptor.version}</version>
+            <scope>test</scope>
+        </dependency>
+        {{/hasAuthMethods}}
     </dependencies>
 
     <properties>
@@ -316,6 +356,17 @@
         <commons-lang3-version>3.17.0</commons-lang3-version>
         {{/useReflectionEqualsHashCode}}
         <junit-version>5.10.2</junit-version>
+        {{#hasHttpSignatureMethods}}
+        <http-signature-version>1.8</http-signature-version>
+        {{/hasHttpSignatureMethods}}
+        {{#hasOAuthMethods}}
+        <scribejava-apis-version>8.3.3</scribejava-apis-version>
+        {{/hasOAuthMethods}}
         <spotless.version>2.27.2</spotless.version>
+        <assertj-core.version>3.27.3</assertj-core.version>
+        {{#hasAuthMethods}}
+        <mockito-core.version>5.14.2</mockito-core.version>
+        <logcaptor.version>2.11.0</logcaptor.version>
+        {{/hasAuthMethods}}
     </properties>
 </project>

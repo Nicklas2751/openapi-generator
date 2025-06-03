@@ -56,26 +56,14 @@ import java.util.concurrent.CompletableFuture;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0-SNAPSHOT")
 public class UserApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+  private final ApiClient memberVarApiClient;
 
   public UserApi() {
     this(Configuration.getDefaultApiClient());
   }
 
   public UserApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+    memberVarApiClient = apiClient;
   }
 
   private ApiException getApiException(String operationId, HttpResponse<String> response) {
@@ -99,8 +87,9 @@ public class UserApi {
    */
   public CompletableFuture<Void> createUser(@javax.annotation.Nonnull User user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = createUserRequestBuilder(user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -123,12 +112,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<Void>> createUserWithHttpInfo(@javax.annotation.Nonnull User user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = createUserRequestBuilder(user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("createUser", localVarResponse));
@@ -144,7 +134,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder createUserRequestBuilder(@javax.annotation.Nonnull User user) throws ApiException {
+      private HttpRequest.Builder createUserRequestBuilder(@javax.annotation.Nonnull User user) throws ApiException {
     // verify the required parameter 'user' is set
     if (user == null) {
       throw new ApiException(400, "Missing the required parameter 'user' when calling createUser");
@@ -154,22 +144,24 @@ public class UserApi {
 
     String localVarPath = "/user";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -183,8 +175,9 @@ public class UserApi {
    */
   public CompletableFuture<Void> createUsersWithArrayInput(@javax.annotation.Nonnull List<User> user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = createUsersWithArrayInputRequestBuilder(user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -207,12 +200,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<Void>> createUsersWithArrayInputWithHttpInfo(@javax.annotation.Nonnull List<User> user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = createUsersWithArrayInputRequestBuilder(user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("createUsersWithArrayInput", localVarResponse));
@@ -228,7 +222,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder createUsersWithArrayInputRequestBuilder(@javax.annotation.Nonnull List<User> user) throws ApiException {
+      private HttpRequest.Builder createUsersWithArrayInputRequestBuilder(@javax.annotation.Nonnull List<User> user) throws ApiException {
     // verify the required parameter 'user' is set
     if (user == null) {
       throw new ApiException(400, "Missing the required parameter 'user' when calling createUsersWithArrayInput");
@@ -238,22 +232,24 @@ public class UserApi {
 
     String localVarPath = "/user/createWithArray";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -267,8 +263,9 @@ public class UserApi {
    */
   public CompletableFuture<Void> createUsersWithListInput(@javax.annotation.Nonnull List<User> user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = createUsersWithListInputRequestBuilder(user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -291,12 +288,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<Void>> createUsersWithListInputWithHttpInfo(@javax.annotation.Nonnull List<User> user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = createUsersWithListInputRequestBuilder(user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("createUsersWithListInput", localVarResponse));
@@ -312,7 +310,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder createUsersWithListInputRequestBuilder(@javax.annotation.Nonnull List<User> user) throws ApiException {
+      private HttpRequest.Builder createUsersWithListInputRequestBuilder(@javax.annotation.Nonnull List<User> user) throws ApiException {
     // verify the required parameter 'user' is set
     if (user == null) {
       throw new ApiException(400, "Missing the required parameter 'user' when calling createUsersWithListInput");
@@ -322,22 +320,24 @@ public class UserApi {
 
     String localVarPath = "/user/createWithList";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -351,8 +351,9 @@ public class UserApi {
    */
   public CompletableFuture<Void> deleteUser(@javax.annotation.Nonnull String username) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = deleteUserRequestBuilder(username);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -375,12 +376,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<Void>> deleteUserWithHttpInfo(@javax.annotation.Nonnull String username) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = deleteUserRequestBuilder(username);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("deleteUser", localVarResponse));
@@ -396,7 +398,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder deleteUserRequestBuilder(@javax.annotation.Nonnull String username) throws ApiException {
+      private HttpRequest.Builder deleteUserRequestBuilder(@javax.annotation.Nonnull String username) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling deleteUser");
@@ -407,16 +409,18 @@ public class UserApi {
     String localVarPath = "/user/{username}"
         .replace("{username}", ApiClient.urlEncode(username.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -430,8 +434,9 @@ public class UserApi {
    */
   public CompletableFuture<User> getUserByName(@javax.annotation.Nonnull String username) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = getUserByNameRequestBuilder(username);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -440,7 +445,7 @@ public class UserApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<User>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<User>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -461,12 +466,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<User>> getUserByNameWithHttpInfo(@javax.annotation.Nonnull String username) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = getUserByNameRequestBuilder(username);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("getUserByName", localVarResponse));
@@ -477,7 +483,7 @@ public class UserApi {
                   new ApiResponse<User>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<User>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<User>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -490,7 +496,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder getUserByNameRequestBuilder(@javax.annotation.Nonnull String username) throws ApiException {
+      private HttpRequest.Builder getUserByNameRequestBuilder(@javax.annotation.Nonnull String username) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling getUserByName");
@@ -501,16 +507,18 @@ public class UserApi {
     String localVarPath = "/user/{username}"
         .replace("{username}", ApiClient.urlEncode(username.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -525,8 +533,9 @@ public class UserApi {
    */
   public CompletableFuture<String> loginUser(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull String password) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = loginUserRequestBuilder(username, password);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -535,7 +544,7 @@ public class UserApi {
             try {
               String responseBody = localVarResponse.body();
               return CompletableFuture.completedFuture(
-                  responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {})
+                  responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<String>() {})
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -557,12 +566,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<String>> loginUserWithHttpInfo(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull String password) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = loginUserRequestBuilder(username, password);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("loginUser", localVarResponse));
@@ -573,7 +583,7 @@ public class UserApi {
                   new ApiResponse<String>(
                       localVarResponse.statusCode(),
                       localVarResponse.headers().map(),
-                      responseBody == null || responseBody.isBlank() ? null : memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {}))
+                      responseBody == null || responseBody.isBlank() ? null : memberVarApiClient.getObjectMapper().readValue(responseBody, new TypeReference<String>() {}))
               );
             } catch (IOException e) {
               return CompletableFuture.failedFuture(new ApiException(e));
@@ -586,7 +596,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder loginUserRequestBuilder(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull String password) throws ApiException {
+      private HttpRequest.Builder loginUserRequestBuilder(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull String password) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling loginUser");
@@ -614,19 +624,21 @@ public class UserApi {
       if (localVarQueryStringJoiner.length() != 0) {
         queryJoiner.add(localVarQueryStringJoiner.toString());
       }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath + '?' + queryJoiner.toString()));
     } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+      localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
     }
 
     localVarRequestBuilder.header("Accept", "application/xml, application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -639,8 +651,9 @@ public class UserApi {
    */
   public CompletableFuture<Void> logoutUser() throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = logoutUserRequestBuilder();
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -662,12 +675,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<Void>> logoutUserWithHttpInfo() throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = logoutUserRequestBuilder();
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("logoutUser", localVarResponse));
@@ -683,22 +697,24 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder logoutUserRequestBuilder() throws ApiException {
+      private HttpRequest.Builder logoutUserRequestBuilder() throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/user/logout";
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }
@@ -713,8 +729,9 @@ public class UserApi {
    */
   public CompletableFuture<Void> updateUser(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull User user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = updateUserRequestBuilder(username, user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
             if (localVarResponse.statusCode()/ 100 != 2) {
@@ -738,12 +755,13 @@ public class UserApi {
    */
   public CompletableFuture<ApiResponse<Void>> updateUserWithHttpInfo(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull User user) throws ApiException {
     try {
+      HttpClient localVarHttpClient = memberVarApiClient.getHttpClient();
       HttpRequest.Builder localVarRequestBuilder = updateUserRequestBuilder(username, user);
-      return memberVarHttpClient.sendAsync(
+      return localVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofString()).thenComposeAsync(localVarResponse -> {
-            if (memberVarAsyncResponseInterceptor != null) {
-              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            if (memberVarApiClient.getAsyncResponseInterceptor() != null) {
+              memberVarApiClient.getAsyncResponseInterceptor().accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
               return CompletableFuture.failedFuture(getApiException("updateUser", localVarResponse));
@@ -759,7 +777,7 @@ public class UserApi {
     }
   }
 
-  private HttpRequest.Builder updateUserRequestBuilder(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull User user) throws ApiException {
+      private HttpRequest.Builder updateUserRequestBuilder(@javax.annotation.Nonnull String username, @javax.annotation.Nonnull User user) throws ApiException {
     // verify the required parameter 'username' is set
     if (username == null) {
       throw new ApiException(400, "Missing the required parameter 'username' when calling updateUser");
@@ -774,22 +792,24 @@ public class UserApi {
     String localVarPath = "/user/{username}"
         .replace("{username}", ApiClient.urlEncode(username.toString()));
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    localVarRequestBuilder.uri(URI.create(memberVarApiClient.getBaseUri() + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(user);
+      byte[] localVarPostBody = memberVarApiClient.getObjectMapper().writeValueAsBytes(user);
       localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    if (memberVarApiClient.getReadTimeout() != null) {
+      localVarRequestBuilder.timeout(memberVarApiClient.getReadTimeout());
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+
+    if (memberVarApiClient.getRequestInterceptor() != null) {
+      memberVarApiClient.getRequestInterceptor().accept(localVarRequestBuilder);
     }
     return localVarRequestBuilder;
   }

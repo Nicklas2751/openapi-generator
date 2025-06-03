@@ -84,6 +84,12 @@ public class AuthApiExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Configure clients using the `defaultClient` object, such as
         // overriding the host and port, timeout, etc.
+        
+        // Configure HTTP basic authorization: http_auth
+        HttpBasicAuth http_auth = (HttpBasicAuth) defaultClient.getAuthentication("http_auth");
+        http_auth.setUsername("YOUR USERNAME");
+        http_auth.setPassword("YOUR PASSWORD");
+
         AuthApi apiInstance = new AuthApi(defaultClient);
         try {
             String result = apiInstance.testAuthHttpBasic();
